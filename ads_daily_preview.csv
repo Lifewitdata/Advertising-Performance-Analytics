@@ -1,0 +1,11 @@
+event_date,campaign_id,geo,device,audience_id,impressions,clicks,conversions,cost
+2025-01-01,cmp_1,US,mobile,aud_2,492,2,1,1.91
+2025-01-01,cmp_1,US,desktop,aud_5,524,3,0,1.92
+2025-01-01,cmp_1,US,tablet,aud_2,497,5,0,1.67
+2025-01-01,cmp_1,GB,mobile,aud_4,470,8,0,1.69
+2025-01-01,cmp_1,GB,desktop,aud_6,446,0,0,1.48
+2025-01-01,cmp_1,GB,tablet,aud_1,478,2,0,1.94
+2025-01-01,cmp_1,IN,mobile,aud_7,488,8,0,1.79
+2025-01-01,cmp_1,IN,desktop,aud_7,495,0,0,1.92
+2025-01-01,cmp_1,IN,tablet,aud_3,486,11,0,1.62
+2025-01-01,cmp_1,DE,mobile,aud_4,523,2,0,1.94
