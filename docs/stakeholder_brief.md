@@ -16,6 +16,12 @@ A notional 10% shift from the lowest-ROAS campaign's synthetic spend to the high
 4. Randomize at user/account level and check sample-ratio mismatch.
 5. Scale in small increments with a control group and guardrail metrics.
 
+## Simulated randomized experiment results
+
+The reproducible user-level simulation randomized 20,000 generated users. Control had 10,112 users and 813 conversions (8.05% CVR); treatment had 9,888 users and 870 conversions (8.80% CVR). The estimated lift was **+0.76 percentage points**, with a **95% Wald confidence interval of -0.01 to +1.53 percentage points** and a **two-sided p-value of 0.0533**. The sample-ratio mismatch diagnostic returned **p = 0.1132**. Under the simulated baseline rates of 8% versus 9%, the approximate sample-size calculation is **12,208 users per arm** for 80% power at a 5% two-sided significance level.
+
+This single simulated run does not meet the conventional 0.05 significance threshold and is under the planned sample size. It is method demonstration only, not a live experiment and not proof of a real campaign effect.
+
 ## Limitations
 Data, rankings, p-values, intervals, anomalies and budget scenarios are synthetic. The experiment did not run on an advertising platform. It establishes no causal impact, incrementality, fraud, margin, partner payout or real return.
 ## Reproducible synthetic baseline
