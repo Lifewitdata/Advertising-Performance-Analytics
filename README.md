@@ -1,133 +1,95 @@
-<div align="center">
+# Advertising Performance Analytics
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=28&pause=1000&color=00D9FF&center=true&vCenter=true&width=650&lines=Advertising+Performance+Analytics;CTR+%C2%B7+CVR+%C2%B7+CPC+%C2%B7+CPA+Deep+Dive;Geo+%C2%B7+Device+%C2%B7+Campaign+%C2%B7+Audience+Insights;Built+with+Python+%2B+Pandas+%2B+Seaborn" alt="Typing SVG" />
+A reproducible portfolio project covering paid-media campaign performance and in-app ad monetisation. It uses **synthetic demonstration data** and is not connected to GreedyGame, Google Ads, Meta or any production account.
 
-<br/>
+## Scope
 
-![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-Data%20Wrangling-150458?style=for-the-badge&logo=pandas&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-Numerics-013243?style=for-the-badge&logo=numpy&logoColor=white)
-![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active-4CAF50?style=for-the-badge)
+- 90 days × 6 campaigns × 4 geographies × 3 devices = **6,480 daily segment records**.
+- Paid media: impressions, clicks, conversions, spend and attributed revenue.
+- App monetisation: requests, served impressions, separate ad revenue, installs, platform, app and demand partner.
+- Data-quality test cases, time trends, segmented rankings, outlier screening, a simulated randomized A/B test, SQL and a Streamlit dashboard.
 
-<br/>
+## Dataset and limitations
 
-<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="500">
+**File:** \`data/ads_daily.csv\`  
+**Date range:** 2025-01-01 to 2025-03-31.  
+**Rows:** 6,480.  
+**Source:** deterministically generated synthetic data; no personal or real advertiser data.
 
-</div>
+Paid campaign attributed revenue (\`revenue_usd\`) is distinct from in-app ad revenue (\`ad_revenue_usd\`). Two deliberately invalid source rows are reported and excluded. Synthetic data does not represent real delivery, benchmarks, GreedyGame reporting, billing, partner payouts or commercial outcomes.
 
----
+## Reproducible synthetic baseline
 
-## 📌 Overview
+| Measure | Value |
+|---|---:|
+| Date coverage | 90 days (2025-01-01 to 2025-03-31) |
+| Input records | 6,480 |
+| Campaigns / geos / devices / audience segments | 6 / 4 / 3 / 3 |
+| Deliberately invalid records | 2 |
+| Valid records after declared checks | 6,478 |
 
-**Advertising-Performance-Analytics** is an exploratory data analysis project that turns raw, daily advertising logs into decision-ready insight. It walks from messy CSV → clean dataframe → efficiency metrics → segmented visual stories, answering the question every media buyer actually asks:
+The two deliberate invalid test cases are one row with clicks exceeding impressions and one row with negative spend. They are flagged and excluded from performance calculations. All figures below are synthetic demonstrations, not actual campaign performance.
 
-> *"Where is our ad spend working — and where is it quietly leaking money?"*
+| Campaign | Impressions | Clicks | Conversions | CTR | CPA (USD) | ROAS |
+|---|---:|---:|---:|---:|---:|---:|
+| display_retarget | 1,736,317 | 106,065 | 11,880 | 6.11% | $3.40 | 5.32x |
+| brand_search | 1,727,232 | 130,223 | 13,713 | 7.54% | $3.98 | 3.38x |
+| app_install | 1,723,952 | 141,407 | 12,359 | 8.20% | $5.52 | 2.89x |
+| video_awareness | 1,729,113 | 58,581 | 2,400 | 3.39% | $7.08 | 2.83x |
+| native_monetize | 1,727,291 | 48,602 | 1,918 | 2.81% | $6.32 | 1.89x |
+| social_prospect | 1,745,107 | 90,857 | 6,643 | 5.21% | $8.22 | 1.82x |
 
-<div align="center">
-<img src="https://user-images.githubusercontent.com/74038190/216122041-518ac897-8d92-4c6b-9b3f-ca01dcaf38ee.png" width="500">
-</div>
+A purely illustrative 10% reallocation would transfer **$5,461.01** from \`social_prospect\` to \`display_retarget\`. This is a scenario only, not live budget advice.
 
----
 
-## 🎯 Objectives
+## Metric definitions
 
-- 🧹 Load, clean, and validate daily advertising data
-- 📐 Calculate core efficiency metrics — **CTR, CVR, CPC, CPA**
-- 🌍 Compare performance across **geo** and **device**
-- 🏆 Identify high-performing **campaigns** and **audience segments**
-- 📈 Visualize trends to support faster, sharper decision-making
-
----
-
-## 📂 Dataset
-
-<div align="center">
-
-| Column | Description |
+| Metric | Formula |
 |---|---|
-| `event_date` | Date of the recorded activity |
-| `geo` | Geographic market |
-| `device` | Device type (mobile / desktop / tablet) |
-| `campaign_id` | Unique campaign identifier |
-| `audience_id` | Audience segment identifier |
-| `impressions` | Ad views served |
-| `clicks` | Ad clicks recorded |
-| `conversions` | Completed conversion events |
-| `cost` | Total spend |
+| CTR | clicks / impressions |
+| CVR | conversions / clicks |
+| CPC | spend_usd / clicks |
+| CPA | spend_usd / conversions |
+| ROAS | revenue_usd / spend_usd |
+| CPI | spend_usd / installs |
+| Fill rate | ad_impressions / ad_requests |
+| eCPM | ad_revenue_usd / ad_impressions × 1,000 |
 
-</div>
+All ratios use grouped sums. Zero denominators return null. eCPM uses in-app ad revenue, not paid-media attributed revenue.
 
-**Source file:** [`ads_daily_preview.csv`](./ads_daily_preview.csv) — daily aggregated advertising metrics.
+## Quick start
 
----
-
-## 🛠️ Tech Stack
-
-<div align="center">
-
-![Python](https://img.shields.io/badge/-Python-05122A?style=flat&logo=python)
-![Pandas](https://img.shields.io/badge/-Pandas-05122A?style=flat&logo=pandas)
-![NumPy](https://img.shields.io/badge/-NumPy-05122A?style=flat&logo=numpy)
-![Matplotlib](https://img.shields.io/badge/-Matplotlib-05122A?style=flat&logo=plotly)
-![Seaborn](https://img.shields.io/badge/-Seaborn-05122A?style=flat&logo=seaborn)
-![Jupyter](https://img.shields.io/badge/-Jupyter-05122A?style=flat&logo=jupyter)
-
-</div>
-
----
-
-## 📊 Key Metrics Explained
-
-| Metric | Formula | What it tells you |
-|---|---|---|
-| **CTR** | clicks ÷ impressions | Ad relevance & creative appeal |
-| **CVR** | conversions ÷ clicks | Landing page & offer effectiveness |
-| **CPC** | cost ÷ clicks | Efficiency of paid traffic acquisition |
-| **CPA** | cost ÷ conversions | True cost of a customer outcome |
-
----
-
-## 🚀 Getting Started
+Python 3.11 is recommended.
 
 ```bash
-# Clone the repo
 git clone https://github.com/Lifewitdata/Advertising-Performance-Analytics.git
 cd Advertising-Performance-Analytics
-
-# Install dependencies
-pip install pandas numpy matplotlib seaborn jupyter
-
-# Launch the notebook
-jupyter notebook "Advertising Performance Analytics.ipynb"
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+python -m pip install -r requirements.txt
+python src/analyze_ads.py
+jupyter lab
 ```
 
----
+Open `Advertising Performance Analytics.ipynb` in the repository root. The data path is repository-relative, not Colab-specific.
 
-## 🗺️ Workflow
+Launch the interactive dashboard:
 
-```mermaid
-flowchart LR
-    A[📥 Raw CSV] --> B[🧹 Clean & Validate]
-    B --> C[📐 Compute CTR / CVR / CPC / CPA]
-    C --> D[🌍 Segment by Geo & Device]
-    D --> E[🏆 Rank Campaigns & Audiences]
-    E --> F[📈 Visualize & Report Insights]
+```bash
+streamlit run dashboard/app.py
 ```
 
----
+Generated tables and JSON summaries are written to `outputs/`.
 
-## 💡 Sample Insight Style
+## SQL
 
-> Each chart in the notebook closes with a written takeaway, e.g.:
-> *"Mobile CTR outpaces desktop by 1.4x in APAC, but desktop converts at nearly 2x the rate — spend allocation should reflect that split rather than a flat device budget."*
+`sql/analysis.sql` contains CTEs, a campaign metadata join, GROUP BY aggregations, weekly/date rollups and window functions. It targets PostgreSQL; load the CSV into a staging table named `ads_daily`.
 
----
+## Authentication
 
-<div align="center">
+This is an offline analytics repository. It contains no application login, OAuth flow, user sessions, API client or secrets. No authentication is required to run the notebook, SQL or dashboard locally. GitHub write access is supplied separately by the connected GitHub account, not by project code. Never commit tokens or passwords.
 
-### ⭐ If this project helped you think about ad analytics differently, consider starring it!
+## Interpretation
 
-<img src="https://user-images.githubusercontent.com/74038190/212284158-e840e285-664b-44d7-b79b-e264b5e54825.gif" width="100%">
-
-</div>
+Rankings include sample sizes and Wilson 95% intervals for CTR/CVR. IQR flags are investigation prompts, not proof of fraud. The A/B experiment is a simulated user-level exercise; no live test ran. Synthetic findings must not be used to move real budget.
