@@ -11,7 +11,7 @@ The published view opens the **Performance Command Centre**. Use the dashboard t
 - Acquisition Efficiency
 - Supply & Risk Observatory
 
-[Download the packaged Tableau workbook (.twbx)](dashboard/Ad_Performance_Intelligence.twbx).
+To obtain a local copy of the packaged workbook, open the Tableau Public page and use **Download → Tableau Workbook** when that option is enabled.
 
 The workbook contains synthetic demonstration data only. It is a portfolio project and is not connected to any company, advertiser, production account or live ad platform.
 
