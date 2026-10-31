@@ -102,6 +102,34 @@ streamlit run dashboard/app.py
 
 Generated tables and JSON summaries are written to \`outputs/\`.
 
+## Run the Streamlit dashboard
+
+From the repository root, create and activate a virtual environment, install the pinned dependencies, and launch Streamlit through the active Python interpreter. Using `python -m streamlit` avoids the common Windows error where the `streamlit` command is not recognised because its Scripts folder is not on PATH.
+
+**Windows (PowerShell or Command Prompt):**
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m streamlit run dashboard/app.py
+```
+
+If PowerShell blocks virtual-environment activation, use Command Prompt and run `.venv\Scripts\activate.bat`, or skip activation and use `.venv\Scripts\python.exe -m pip install -r requirements.txt` followed by `.venv\Scripts\python.exe -m streamlit run dashboard/app.py`.
+
+**macOS / Linux:**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m streamlit run dashboard/app.py
+```
+
+In VS Code, select the same `.venv` interpreter via **Python: Select Interpreter** before running the dashboard. The app reads `data/ads_daily.csv` using a path relative to the repository, so launch it from the project checkout.
+
 ## SQL
 
 \`sql/analysis.sql\` contains CTEs, a campaign metadata join, GROUP BY aggregations, weekly/date rollups and window functions. It targets PostgreSQL; load the CSV into a staging table named \`ads_daily\`.
