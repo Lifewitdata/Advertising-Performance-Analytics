@@ -1,0 +1,79 @@
+name: Streamlit dashboard smoke test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dashboard/**"
+      - "src/**"
+      - "data/**"
+      - "requirements.txt"
+      - ".github/workflows/dashboard-smoke.yml"
+  pull_request:
+    paths:
+      - "dashboard/**"
+      - "src/**"
+      - "data/**"
+      - "requirements.txt"
+      - ".github/workflows/dashboard-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  dashboard-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Compile dashboard and analysis modules
+        run: python -m py_compile dashboard/app.py src/analyze_ads.py
+
+      - name: Validate data and analytical imports
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+
+          root = Path.cwd()
+          sys.path.insert(0, str(root / "src"))
+          from analyze_ads import aggregate, load_and_validate
+
+          df, quality = load_and_validate(root / "data" / "ads_daily.csv")
+          assert not df.empty, "Validated dataset is empty"
+          summary = aggregate(df.assign(scope="all"), ["scope"])
+          assert len(summary) == 1
+          assert summary.iloc[0]["impressions"] > 0
+          assert "excluded_rows" in quality
+          print(f"Validated {len(df):,} rows; quality checks passed.")
+          PY
+
+      - name: Start Streamlit and check health endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m streamlit run dashboard/app.py --server.headless true --server.port 8501 > /tmp/streamlit.log 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8501/_stcore/health; then
+              echo "Streamlit dashboard started successfully."
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/streamlit.log
+          echo "Streamlit did not become healthy."
+          exit 1
