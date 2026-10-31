@@ -1,5 +1,21 @@
 # Advertising Performance Analytics
 
+## Interactive Tableau Dashboard
+
+[Open the interactive Tableau Public dashboard](https://public.tableau.com/app/profile/isfaque.ansari5273/viz/Ad_Performance_Intelligence/01PerformanceCommandCentre).
+
+The published view opens the **Performance Command Centre**. Use the dashboard tabs to explore all four views:
+
+- Performance Command Centre
+- Monetisation Intelligence
+- Acquisition Efficiency
+- Supply & Risk Observatory
+
+[Download the packaged Tableau workbook (.twbx)](dashboard/Ad_Performance_Intelligence.twbx).
+
+The workbook contains synthetic demonstration data only. It is a portfolio project and is not connected to any company, advertiser, production account or live ad platform.
+
+---
 A reproducible portfolio project covering paid-media campaign performance and in-app ad monetisation. It uses **synthetic demonstration data** and is not connected to GreedyGame, Google Ads, Meta or any production account.
 
 ## Scope
