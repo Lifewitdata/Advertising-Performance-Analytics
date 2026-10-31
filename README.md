@@ -41,7 +41,6 @@ The two deliberate invalid test cases are one row with clicks exceeding impressi
 
 A purely illustrative 10% reallocation would transfer **$5,461.01** from \`social_prospect\` to \`display_retarget\`. This is a scenario only, not live budget advice.
 
-
 ## Metric definitions
 
 | Metric | Formula |
@@ -61,30 +60,35 @@ All ratios use grouped sums. Zero denominators return null. eCPM uses in-app ad 
 
 Python 3.11 is recommended.
 
-```bash
+\`\`\`bash
 git clone https://github.com/Lifewitdata/Advertising-Performance-Analytics.git
 cd Advertising-Performance-Analytics
 python -m venv .venv
-# Windows: .venv\Scripts\activate
+# Windows: .venv\\Scripts\\activate
 # macOS/Linux: source .venv/bin/activate
 python -m pip install -r requirements.txt
+
+# Optional: regenerate the deterministic synthetic CSV
+python src/generate_synthetic_data.py
+
+# Validate, analyse and write outputs/
 python src/analyze_ads.py
 jupyter lab
-```
+\`\`\`
 
-Open `Advertising Performance Analytics.ipynb` in the repository root. The data path is repository-relative, not Colab-specific.
+Open \`Advertising Performance Analytics.ipynb\` in the repository root. The data path is repository-relative, not Colab-specific.
 
 Launch the interactive dashboard:
 
-```bash
+\`\`\`bash
 streamlit run dashboard/app.py
-```
+\`\`\`
 
-Generated tables and JSON summaries are written to `outputs/`.
+Generated tables and JSON summaries are written to \`outputs/\`.
 
 ## SQL
 
-`sql/analysis.sql` contains CTEs, a campaign metadata join, GROUP BY aggregations, weekly/date rollups and window functions. It targets PostgreSQL; load the CSV into a staging table named `ads_daily`.
+\`sql/analysis.sql\` contains CTEs, a campaign metadata join, GROUP BY aggregations, weekly/date rollups and window functions. It targets PostgreSQL; load the CSV into a staging table named \`ads_daily\`.
 
 ## Authentication
 
@@ -93,3 +97,4 @@ This is an offline analytics repository. It contains no application login, OAuth
 ## Interpretation
 
 Rankings include sample sizes and Wilson 95% intervals for CTR/CVR. IQR flags are investigation prompts, not proof of fraud. The A/B experiment is a simulated user-level exercise; no live test ran. Synthetic findings must not be used to move real budget.
+
